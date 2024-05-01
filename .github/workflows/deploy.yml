@@ -66,7 +66,7 @@ jobs:
           path: ${{ env.DIST_PATH }}
 
       - name: Setup Pages
-        run: ${{ env.DIST_PATH }}
+        run: ls -R ${{ env.DIST_PATH }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
