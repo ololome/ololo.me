@@ -10,8 +10,9 @@ on:
   workflow_dispatch:
 
 env:
-  ARTIFACT_NAME: 'ololome-site'
-  DIST_PATH: './dist'
+  ARTIFACT_NAME: 'ololome-website'
+  APP_CODE_DIRECTORY: 'website'
+  DIST_DIRECTORY: 'dist'
   NODE_VERSION: '20'
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
@@ -39,6 +40,7 @@ jobs:
           cache: 'npm'
 
       - name: npm install, lint and build
+        working-directory: ./${{ env.APP_CODE_DIRECTORY }}
         run: |
           npm ci
           npm run build
@@ -47,10 +49,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.DIST_PATH }}
-
-      - name: Check filesystem
-        run: ls -l
+          path: ./${{ env.APP_CODE_DIRECTORY }}/${{ env.DIST_DIRECTORY }}
 
   deploy:
     runs-on: ubuntu-latest
@@ -63,10 +62,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{ env.ARTIFACT_NAME }}
-          path: ${{ env.DIST_PATH }}
+          path: ./${{ env.DIST_DIRECTORY }}
 
-      - name: Setup Pages
-        run: ls -R ${{ env.DIST_PATH }}
+      - name: Show workscace
+        run: ls -R ./${{ env.DIST_DIRECTORY }}
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -74,7 +73,7 @@ jobs:
       - name: Upload artifact to pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ${{ env.DIST_PATH }}
+          path: ./${{ env.DIST_DIRECTORY }}
 
       - name: Deploy to GitHub Pages
         id: deployment
