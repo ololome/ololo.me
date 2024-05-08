@@ -14,7 +14,6 @@ env:
   APP_CODE_DIRECTORY: 'website'
   DIST_DIRECTORY: 'dist'
   NODE_VERSION: '20'
-  NODE_ENV: 'production'
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
